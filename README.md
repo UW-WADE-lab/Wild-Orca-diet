@@ -1,2 +1,2 @@
 # Wild-Orca-diet
-Genetic metabarcoding of fecal samples collected by Wild Orca
+This repository contains all of the code used to generate a preliminary report from the results of genetic metabarcoding of fecal samples collected by Wild Orca. A living version of the report can be found here. All data and results are preliminary and are intended to be incoporated into a peer-reviewed manuscript in collaboration with Wild Orca, San Diego Zoo Wildlife Alliance, and NOAA.
