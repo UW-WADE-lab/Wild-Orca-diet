@@ -1,11 +1,22 @@
 ---
 title: "Investigating Annual and Seasonal Diet Preference of Southern Resident Killer Whales in the Salish Sea: A Genetic Metabarcoding Approach"
-format: html
-author: Sofia Kaiaua, Deborah Giles, Amy Van Cise
+author: "Sofia Kaiaua^1^, Deborah Giles^2,1^, Amy Van Cise^!^"
 editor: visual
-
+format: 
+  html:
+    output-dir: docs
+    output-file: "index"
 bibliography: "`r rbbt::bbt_write_bib('bibliography.json', overwrite = TRUE)`" 
 ---
+
+1.  University of Washington, Seattle, WA
+2.  Wild Orca, San Juan, WA
+
+<br>
+
+Corresponding author email: avancise\@uw.edu
+
+<br>
 
 ### Background
 
@@ -67,7 +78,7 @@ Figure 1 shows the difference in final DNA concentration (left), read count (mid
 dna_con_subset | reads_subset | species_prop_subset
 ```
 
-Chinook salmon was the most common prey species across all samples during all time periods (Figures 2 and 3). Coho salmon was the next most common prey species across all samples and was most prevalent in the late summer to early fall months (Figure 3) with proportions up to 28.4% (Table 2). Chum salmon was the third most common prey species across all samples (Figure 3) and also most prevalent in the late summer to early fall months with proportions up to 19.8% (Table 1). Lingcod (*Ophiodon elongatus*) was present in early summer months in proportions up to 5.2% (Table 2). Uncommonly detected species included arrowtooth flounder (*Atheresthes stomias*), steelhead (*Oncorhynchus mykiss*), swordspine rockfish (*Sebastes ensifer*), Pacific dover sole (*Microstomus pacificus*), and Alaska polluck (*Gadus chalcogrammus*), were in low frequencies throughout all months  (≤1%).Great white shark (*Carcharodon carcharias*) represented approximately 20% of one sample, collected on Sept 8, 2022.
+Chinook salmon was the most common prey species across all samples during all time periods (Figures 2 and 3). Coho salmon was the next most common prey species across all samples and was most prevalent in the late summer to early fall months (Figure 3) with proportions up to 28.4% (Table 2). Chum salmon was the third most common prey species across all samples (Figure 3) and also most prevalent in the late summer to early fall months with proportions up to 19.8% (Table 1). Lingcod (*Ophiodon elongatus*) was present in early summer months in proportions up to 5.2% (Table 2). Uncommonly detected species included arrowtooth flounder (*Atheresthes stomias*), steelhead (*Oncorhynchus mykiss*), swordspine rockfish (*Sebastes ensifer*), Pacific dover sole (*Microstomus pacificus*), and Alaska polluck (*Gadus chalcogrammus*), were in low frequencies throughout all months (≤1%).Great white shark (*Carcharodon carcharias*) represented approximately 20% of one sample, collected on Sept 8, 2022.
 
 ```{r,echo=FALSE}
 #| label: Figure 2
@@ -162,13 +173,13 @@ year_bar_update / year_box
 
 ### Discussion
 
-Our findings align with previous studies indicating significant diet contributions from major prey species, including Chinook, coho, and chum salmon [@Hanson2021; @vancise_etal24]. Similar to those previous studies, we observed a decrease in Chinook proportions in August and September compared to early summer months, made up for by increasing proportions of chum and coho salmon increase (Figure 2, Table 2). 
+Our findings align with previous studies indicating significant diet contributions from major prey species, including Chinook, coho, and chum salmon [@Hanson2021; @vancise_etal24]. Similar to those previous studies, we observed a decrease in Chinook proportions in August and September compared to early summer months, made up for by increasing proportions of chum and coho salmon increase (Figure 2, Table 2).
 
 This pilot study successfully generated data for 34 samples collected from all three SRKW pods across a seven month time period and spanning five years; because we know that SRKW diet can vary substantially seasonally and among pods, it is important to remember that this small sample size may have biased our results. With that said, we observed several patterns in this initial subset of data that merit follow-up once the full sample set from Wild Orca is sequenced and combined with the existing sequence data from NOAA samples. We mention these observations below.
 
 Notably, our data suggests a greater prey species contribution from coho salmon (Figure 2) compared to existing studies identifying chum salmon as the second greatest contributor to SRKW diet. This may be an effect of bias due to small sample size, or may reflect annual fluctuations in the proportion of coho and chum in SRKW diet.
 
-The detection of steelhead and lingcod in the summer diet (Figure 2) supplements existing data indicating that these species were only part of the diet in winter months (Jan-Mar; @vancise_etal24). Similarly, sockeye salmon have previously been identified in the diet of SRKW in February and September; here we observe sockeye salmon in samples collected in July and November. Arrowtooth, previously observed in SRKW diet primarily in October, was observed in this sample set in samples collected in May, June, and August. These findings expand our understanding of SRKW seasonal foraging ecology, suggesting that a number of non-salmonid species might be consumed opportunistically throughout the year. 
+The detection of steelhead and lingcod in the summer diet (Figure 2) supplements existing data indicating that these species were only part of the diet in winter months (Jan-Mar; @vancise_etal24). Similarly, sockeye salmon have previously been identified in the diet of SRKW in February and September; here we observe sockeye salmon in samples collected in July and November. Arrowtooth, previously observed in SRKW diet primarily in October, was observed in this sample set in samples collected in May, June, and August. These findings expand our understanding of SRKW seasonal foraging ecology, suggesting that a number of non-salmonid species might be consumed opportunistically throughout the year.
 
 The most surprising observed species in this sample set is the great white shark, which is a species that is not known to inhabit the inland waters of the Salish Sea. In order to confirmed this observation we conducted a search of NCBI Genbank, and international database of genetic sequence data, and found that our sequence is a 100% DNA match to existing great white shark species, with no alternative matches. The sample was collected on September 8, 2022 from a large group of SRKW comprising both J and K pod individuals located off San Juan Island, from and individual that was genetically determined to be J40. J pod was near the San Juan Islands on September 6 and 7, and near the Fraser River on September 5. However, K pod was along the outer coast of Washington until the night of September 7, and were acoustically observed to enter the Salish Sea during the night of September 7. Because some matrilines of J pod will sometimes travel with K pod, we don't know whether J40 was offshore or inland waters in the days before this sample was collected. Similarly, because we don't know gut transit time for killer whales, we don't have an accurate estimate for when the shark may have been eaten.
 
@@ -176,9 +187,11 @@ The observation of great white shark in the SRKW diet has a number of implicatio
 
 We also detected small amounts of Alaska polluck and swordspine rockfish. Both of these fishes were detected in relatively small proportions, and are known prey of SRKW prey items (e.g. salmonids, flounder, halibut, sablefish), therefore we hypothesize that we are observing these species as secondary prey items (i.e. fishes that were eaten by fishes eaten by killer whales).
 
-Recent studies (Hanson et al. 2021, Van Cise et a. 2024) and this pilot study illustrate that genetic metabarcoding of SRKW fecal samples continues to provide new and valuable insight into seasonal variation in diet and foraging ecology. While this is certainly true for winter months, for which we have very few samples, increasing our observational power during summer months has also proven valuable. Our results not only expand our understanding of opportunistic foraging throughout the year in this population, but also add new species to the diet of this population, and may indicate that SRKW are expanding their diet in response to shifts in their prey base. 
+Recent studies (Hanson et al. 2021, Van Cise et a. 2024) and this pilot study illustrate that genetic metabarcoding of SRKW fecal samples continues to provide new and valuable insight into seasonal variation in diet and foraging ecology. While this is certainly true for winter months, for which we have very few samples, increasing our observational power during summer months has also proven valuable. Our results not only expand our understanding of opportunistic foraging throughout the year in this population, but also add new species to the diet of this population, and may indicate that SRKW are expanding their diet in response to shifts in their prey base.
 
 The sparsity of diet samples over time, space, and social groups makes it so that any new samples enrich our understanding of SRKW foraging ecology in multiple dimensions. Future work by Wild Orca and the San Diego Zoo Wildlife Alliance to sequence historical and contemporary samples, in collaboartion with NOAAs ongoing diet monitoring, promises to provide insight on forgaing ecology that will inform the management of the endangered SRKW population.
 
 ### References
-<div id="refs"></div>
+
+::: {#refs}
+:::
