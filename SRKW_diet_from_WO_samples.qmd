@@ -1,6 +1,6 @@
 ---
 title: "Investigating Annual and Seasonal Diet Preference of Southern Resident Killer Whales in the Salish Sea: A Genetic Metabarcoding Approach"
-author: "Sofia Kaiaua^1^, Deborah Giles^2,1^, Amy Van Cise^!^"
+author: "Sofia Kaiaua^1^, Deborah Giles^2,1^, Amy Van Cise^1^"
 editor: visual
 format: 
   html:
@@ -36,8 +36,6 @@ We processed the raw sequence data using a custom dada2-based bioinformatic pipe
 
 We performed all downstream data analysis in R using phyloseq (version 1.50.0), vegan, and ggplot.
 
-### Load Libraries
-
 ```{r,echo=FALSE}
 #| label: Load packages
 #| echo: false
@@ -51,14 +49,19 @@ library(pander)
 library(patchwork)
 library(rbbt)
 
-load("G:/My Drive/00 UW/00.5 W.A.D.E. lab resources/Intern Projects/SRKW diet metabarcoding/04 Data analysis/SRKW_WO_16Sdiet_phyloseqout.Rdata")
-load("G:/My Drive/00 UW/00.5 W.A.D.E. lab resources/Intern Projects/SRKW diet metabarcoding/04 Data analysis/SRKW_WO_16Sdiet_dada2out.Rdata")
+load("Data/SRKW_WO_16Sdiet_phyloseqout.Rdata")
+load("Data/SRKW_WO_16Sdiet_dada2out.Rdata")
+load("Data/protocol_optimization_figs.Rdata")
+
+theme_set(theme_minimal())
 
 ```
 
 ### Results
 
-Of the 78 samples provided by Wild Orca, we successfully amplified 37 samples. Most of these (n = 21) were successful in the first iteration of amplification (i.e. original concentration). We gained 1 additional sample in the 1:10 dilution, 2 samples in the 1:2 dilution, 5 samples from the Zymo-cleaned extract, and 8 samples at 2x concentration of cleaned extract. All 38 successfully amplified samples were then cleaned and indexed, and 8 duplicates were indexed without cleaning. This resulted in 45 samples that underwent a post-index bead clean and were pooled into a final product for sequencing.
+#### Genetic sequencing
+
+Of the 76 SRKW samples provided by Wild Orca, we successfully amplified 37 samples. Most of these (n = 21) were successful in the first iteration of amplification (i.e. original concentration). We gained 1 additional sample in the 1:10 dilution, 2 samples in the 1:2 dilution, 5 samples from the Zymo-cleaned extract, and 8 samples at 2x concentration of cleaned extract. All 38 successfully amplified samples were then cleaned and indexed, and 8 duplicates were indexed without cleaning. This resulted in 45 samples that underwent a post-index bead clean and were pooled into a final product for sequencing.
 
 After aligning and merging forward and reverse raw sequence reads, we retained 36 of the 45 samples; the remaining 9 samples were removed due to low sequence quality. Table 1 shows the mean number of reads retained after each step in the dada2 quality control pipeline; the final number of reads per sample ranged from 458 to 368,431. Of the 9 samples that were not successfully sequenced, 5 were cleaned samples with successful uncleaned duplicates.
 
@@ -71,20 +74,15 @@ pander(as.data.frame(track) %>% summarise_all(c(mean)), big.mark = ",")
 
 After removing host sequences, we additionally removed WADE-002-076 and WADE-002-077 which did not have any sequence reads assigning to prey species. This resulted in a final total of 34 samples with prey sequence data that were used in downstream data analyses and visualization.
 
-Figure 1 shows the difference in final DNA concentration (left), read count (middle), and proportional abundance (right) between duplicated samples with and without a post-amplification cleaning step. Although highly variable, post-amplification cleaning on average resulted in a loss of DNA. In 5 of the 8 duplicates, DNA concentration was reduced to near 0 ng/ul (below Qubit detection levels), resulting in a failure to sequence these samples. In the three samples for which both duplicates were successfully sequenced, the proportional abundance of prey species was identical between duplicates.
+#### Identification of prey species
 
-```{r Figure1,echo=FALSE, message=FALSE, fig.width = 10, fig.cap = "Fig 1. Comparison among duplicated samples with and without a post-amplification cleanup step. A: DNA concentration (ng/ul) after the post-index cleanup step. B: Final read count post-QAQC pipeline. C: Proportional abundance of prey by species."}
-
-dna_con_subset | reads_subset | species_prop_subset
-```
-
-Chinook salmon was the most common prey species across all samples during all time periods (Figures 2 and 3). Coho salmon was the next most common prey species across all samples and was most prevalent in the late summer to early fall months (Figure 3) with proportions up to 28.4% (Table 2). Chum salmon was the third most common prey species across all samples (Figure 3) and also most prevalent in the late summer to early fall months with proportions up to 19.8% (Table 1). Lingcod (*Ophiodon elongatus*) was present in early summer months in proportions up to 5.2% (Table 2). Uncommonly detected species included arrowtooth flounder (*Atheresthes stomias*), steelhead (*Oncorhynchus mykiss*), swordspine rockfish (*Sebastes ensifer*), Pacific dover sole (*Microstomus pacificus*), and Alaska polluck (*Gadus chalcogrammus*), were in low frequencies throughout all months (≤1%).Great white shark (*Carcharodon carcharias*) represented approximately 20% of one sample, collected on Sept 8, 2022.
+Chinook salmon was the most common prey species across all samples during all time periods (Figure 1). Coho salmon was the next most common prey species across all samples with proportions up to 28.4% (Table 2). Chum salmon was the third most common prey species across all samples. Lingcod (*Ophiodon elongatus*) was present in early summer months in proportions up to 5.2%. Uncommonly detected species included arrowtooth flounder (*Atheresthes stomias*), steelhead (*Oncorhynchus mykiss*), swordspine rockfish (*Sebastes ensifer*), Pacific dover sole (*Microstomus pacificus*), and Alaska polluck (*Gadus chalcogrammus*), were in low frequencies throughout all months (≤1%). Great white shark (*Carcharodon carcharias*) represented approximately 20% of one sample collected on Sept 8, 2022 near San Juan Island.
 
 ```{r,echo=FALSE}
 #| label: Figure 2
 #| message: FALSE
 #| fig-width: 10
-#| fig-cap: Fig 2. Relative abundance of prey items detected in southern resident killer whale samples. Species are only included if they make up >1% of at least one sample. Each sample shown on x axis, proportion of each species (indicated by color) indicated on the y axis.
+#| fig-cap: Fig 1. Relative abundance of prey items detected in southern resident killer whale samples. Species are only included if they make up >1% of at least one sample. Each sample shown on x axis, proportion of each species (indicated by color) indicated on the y axis.
 
 species_prop_bar +
   scale_fill_discrete(limits = c("Atheresthes stomias","Oncorhynchus keta",
@@ -103,7 +101,9 @@ species_prop_bar +
 
 ```
 
--   When samples are organized into summer and non-summer months (Figure 3), we see that, in general, diet is more variable in non-summer months than in summer months. However, we observed lingcod in the summer diet, which has not been identified as part of the summer diet in previous studies.
+#### Seasonal and annual variability in diet
+
+When samples are organized into summer and non-summer months (Figure 2), we see that, in general, diet is more variable in non-summer months than in summer months. Chinook is the most common species in both seasons, and we observed that chum and coho both increased in late summer to early fall months. Notably, we observed lingcod, steelhead, sockeye salmon and arrowtooth flounderin the summer diet, which have not been identified as part of the summer diet in previous studies.
 
 ```{r,echo=FALSE}
 #| label: Seasonal Diet Composition 
@@ -111,7 +111,7 @@ species_prop_bar +
 #| warning: FALSE
 #| fig-height: 10
 #| fig-width: 10
-#| fig-cap: Fig 3. Seasonal variability in southern resident killer whale diet (top) in summer vs. non-summer months and (bottom) per species-month.
+#| fig-cap: Fig 2. Seasonal variability in southern resident killer whale diet (top) in summer vs. non-summer months and (bottom) per species-month.
 
 
 season_bar_update <- season_bar +
@@ -144,14 +144,14 @@ monthly_prey_proportion <- monthly_prey_proportion %>%
 pander(monthly_prey_proportion, split.table =Inf)
 ```
 
-Finally, we observed a large amount of diet variability among years, with no immediately discernible trends in diversity or content (Figure 4).
+Finally, we observed a large amount of diet variability among years, with no immediately discernible trends in diversity or content (Figure 3).
 
 ```{r,echo=FALSE}
 #| label: Annual Diet Composition 
 #| message: FALSE
 #| fig-height: 10
 #| fig-width: 10
-#| fig-cap: Fig 4. Annual variability in souther resident killer whale diet composition (top) and diversity (bottom).
+#| fig-cap: Fig 3. Annual variability in souther resident killer whale diet composition (top) and diversity (bottom).
 
 year_bar_update <- year_bar +
   scale_fill_discrete(limits = c("Atheresthes stomias","Oncorhynchus keta",
@@ -173,17 +173,17 @@ year_bar_update / year_box
 
 ### Discussion
 
-Our findings align with previous studies indicating significant diet contributions from major prey species, including Chinook, coho, and chum salmon [@Hanson2021; @vancise_etal24]. Similar to those previous studies, we observed a decrease in Chinook proportions in August and September compared to early summer months, made up for by increasing proportions of chum and coho salmon increase (Figure 2, Table 2).
+Our findings align with previous studies indicating significant diet contributions from major prey species including Chinook, coho, and chum salmon [@Hanson2021; @vancise_etal24]. Similar to those previous studies, we observed a decrease in Chinook proportions in August and September compared to early summer months, made up for by increasing proportions of chum and coho salmon increase.
 
 This pilot study successfully generated data for 34 samples collected from all three SRKW pods across a seven month time period and spanning five years; because we know that SRKW diet can vary substantially seasonally and among pods, it is important to remember that this small sample size may have biased our results. With that said, we observed several patterns in this initial subset of data that merit follow-up once the full sample set from Wild Orca is sequenced and combined with the existing sequence data from NOAA samples. We mention these observations below.
 
-Notably, our data suggests a greater prey species contribution from coho salmon (Figure 2) compared to existing studies identifying chum salmon as the second greatest contributor to SRKW diet. This may be an effect of bias due to small sample size, or may reflect annual fluctuations in the proportion of coho and chum in SRKW diet.
+Notably, our data suggests a greater prey species contribution from coho salmon compared to existing studies identifying chum salmon as the second greatest contributor to SRKW diet. This may be an effect of bias due to small sample size, or may reflect annual fluctuations in the proportion of coho and chum in SRKW diet.
 
-The detection of steelhead and lingcod in the summer diet (Figure 2) supplements existing data indicating that these species were only part of the diet in winter months (Jan-Mar; @vancise_etal24). Similarly, sockeye salmon have previously been identified in the diet of SRKW in February and September; here we observe sockeye salmon in samples collected in July and November. Arrowtooth, previously observed in SRKW diet primarily in October, was observed in this sample set in samples collected in May, June, and August. These findings expand our understanding of SRKW seasonal foraging ecology, suggesting that a number of non-salmonid species might be consumed opportunistically throughout the year.
+The detection of steelhead and lingcod in the summer diet supplements existing data indicating that these species were only part of the diet in winter months (Jan-Mar; @vancise_etal24). Similarly, sockeye salmon have previously been identified in the diet of SRKW in February and September; here we observe sockeye salmon in samples collected in July and November. Arrowtooth, previously observed in SRKW diet primarily in October, was observed in this sample set in samples collected in May, June, and August. These findings expand our understanding of SRKW seasonal foraging ecology, suggesting that a number of non-salmonid species might be consumed opportunistically throughout the year.
 
 The most surprising observed species in this sample set is the great white shark, which is a species that is not known to inhabit the inland waters of the Salish Sea. In order to confirmed this observation we conducted a search of NCBI Genbank, and international database of genetic sequence data, and found that our sequence is a 100% DNA match to existing great white shark species, with no alternative matches. The sample was collected on September 8, 2022 from a large group of SRKW comprising both J and K pod individuals located off San Juan Island, from and individual that was genetically determined to be J40. J pod was near the San Juan Islands on September 6 and 7, and near the Fraser River on September 5. However, K pod was along the outer coast of Washington until the night of September 7, and were acoustically observed to enter the Salish Sea during the night of September 7. Because some matrilines of J pod will sometimes travel with K pod, we don't know whether J40 was offshore or inland waters in the days before this sample was collected. Similarly, because we don't know gut transit time for killer whales, we don't have an accurate estimate for when the shark may have been eaten.
 
-The observation of great white shark in the SRKW diet has a number of implications. SRKW have previously been observed to eat skate (Van Cise et al. 2024), but no shark has ever been observed in the diet of these animals. We know from morphological observations that offshore killer whales, which are thought to primarily eat sharks, suffer significant wearing and damage to their teeth over their lifetimes. The lack of similar wear in SRKW teeth suggests that shark is a rare prey item - it is possible that this predation event was precipitated by climate change (shifting prey distributions), lack of their regular prey base, or both. On a broader scale, annual or secular trends in diet diversity may reflect shifts in foraging ecology reflecting a shifting and deteriorating prey base; additional sequencing of historical and contemporary samples will be important to testing this hypothesis.
+The observation of great white shark in the SRKW diet has a number of implications. SRKW have previously been observed to eat skate [@Hanson2021; @vancise_etal24], and dogfish sharks [@Ford2016], but no white shark (i.e. mako sharks, salmon sharks, porbeagle sharks, and great white sharks) has ever been observed in the diet of these animals. We know from morphological observations that offshore killer whales, which are thought to primarily eat sharks, suffer significant wearing and damage to their teeth over their lifetimes. The lack of similar wear in SRKW teeth suggests that shark is a rare prey item - it is possible that this predation event was an anomaly, or that it was precipitated by climate change (northward shifting prey distributions), lack of their regular prey base, or both. On a broader scale, annual or secular trends in diet diversity may reflect shifts in foraging ecology reflecting a shifting and deteriorating prey base; additional sequencing of historical and contemporary samples will be important to testing this hypothesis.
 
 We also detected small amounts of Alaska polluck and swordspine rockfish. Both of these fishes were detected in relatively small proportions, and are known prey of SRKW prey items (e.g. salmonids, flounder, halibut, sablefish), therefore we hypothesize that we are observing these species as secondary prey items (i.e. fishes that were eaten by fishes eaten by killer whales).
 
@@ -195,3 +195,49 @@ The sparsity of diet samples over time, space, and social groups makes it so tha
 
 ::: {#refs}
 :::
+
+### Appendix I: Protocol Optimization
+
+Because sample collection and processing differs between Wild Orca and NOAA, it was neccessary to optimize the lab protocol used to generate genetic sequence data. The following tests were conducted:
+
+1.  Analysis of extracted DNA concentration by sample type: wet scoop, swab, or lyophilized (dried).
+2.  Analysis of the difference in extracted DNA concentration before and after cleaning using a Zymo Clean and Concentrate kit (Zymo, Inc.).
+3.  Analysis of PCR success by DNA concentration.
+4.  Analysis of the effect of a post-amplification cleaning step on final DNA concentration, sequencing depth (read count), and resulting analysis of prey species in each sample.
+
+#### Results
+
+Results of each of these analyses are shown below, and in a poster presented at the UW Summer Research Symposium in August 2024.
+
+Based on these results, the WADE Lab genetic metabarcoding protocol was optimized for WO samples in the following way:
+
+1.  Ideal sample input is 0.1g of lyophilized (dried) sample material. Fecal samples collected using a plastic scoop should be passed through a net or sieve after centrifugation to remove seawater, and/or lyophilized to remove water content. Swab samples had a high rate of failure due to very low sample volume.
+2.  All samples failing the amplification step should be cleaned and re-amplified using 2x input volume (up to 10 ul).
+3.  Samples that still fail the amplification step may be diluted to a DNA concentration of 12-45 ng/ul to increase likelihood of amplification success.
+4.  Post amplification cleaning step should be removed, retaining the cleaning step after indexing and the final gel cleaning for size selection.
+5.  Samples with a final DNA concentration too low for detection should not be pooled for sequencing.
+
+```{r, echo=FALSE}
+#| label: protocol optimization 
+#| message: FALSE
+#| warning: FALSE
+#| fig-height: 10
+#| fig-width: 16
+#| fig-cap: "Supplemental Figure 1. Top: Extracted DNA concentration by sample type (left) and before and after cleaning (middle), and amplification success by DNA concentration. Bottom: Comparison among duplicated samples with and without a post-amplification cleanup step. Left: DNA concentration (ng/ul) after the post-index cleanup step. Middle: Final read count post-QAQC pipeline. Right: Proportional abundance of prey by species."
+
+seq_by_clean <- dna_con_subset | reads_subset | species_prop_subset
+
+pcr_by_con <- con_by_type_fig | DNA_by_clean | amp_by_DNA
+
+pcr_by_con / seq_by_clean
+```
+
+Supplemental Figure 1 (top left) shows the difference in extracted DNA concentration across each of three difference sample types collected by Wild Orca. Wet scoops are collected from the sea surface using a sterilized plastic scoop and centrifuged before pouring off as much seawater as possible. Extracted DNA concentrations from this type sample were highly variable, likely due to variation in seawater content. Swabbed samples are a small volume of fecal matter smeared onto a cotton tip, and resulted in low DNA concentrations and a high rate of sample failure. Lyophilized (dried) samples had the highest consistency in producing ideal DNA concentration.
+
+Supplemental Figure 1 (top) also shows the difference in extracted DNA concentration before and after cleaning (middle), indicating a high rate of DNA loss, and the amplification success rate by extracted DNA concentration (right), indicating that samples with \~12-45 ng/ul of extracted DNA had the highest rate of success.
+
+Supplemental Figure 1 (bottom) shows the difference in final DNA concentration (left), read count (middle), and proportional abundance (right) between duplicated samples with and without a post-amplification cleaning step. Although highly variable, post-amplification cleaning on average resulted in a loss of DNA. In 5 of the 8 duplicates, DNA concentration was reduced to near 0 ng/ul (below Qubit detection levels), resulting in a failure to sequence these samples. In the three samples for which both duplicates were successfully sequenced, the proportional abundance of prey species was identical between duplicates.
+
+Sofia Kaiaua presented the intermediate results of this research at the UW Summer Research Symposium following a 10-week internship program. This presentation is included as Supplemental Figure 2.
+
+![Supplemental Figure 2. Poster presented by Sofia Kaiaua at the UW Summer Research Symposium in August 2024, detailing intermediate results of genetic metabarcoding protocol optimization.](Data/Kaiaua.WO_labwork_optimization_poster_2024.png){#id .class align="center"}

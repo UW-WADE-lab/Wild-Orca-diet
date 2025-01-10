@@ -4,7 +4,6 @@
 
 ### Set up environment ---------------------------------------------------------
 library(tidyverse)
-library(kableExtra)
 library(phyloseq)
 library(Biostrings)
 library(RColorBrewer)
@@ -15,10 +14,8 @@ library(viridis)
 
 theme_set(theme_minimal())
 
-setwd("G:/My Drive/00 UW/00.5 W.A.D.E. lab resources/Intern Projects/SRKW diet metabarcoding/04 Data analysis")
-
 #Load data
-load("G:/My Drive/00 UW/00.5 W.A.D.E. lab resources/Intern Projects/SRKW diet metabarcoding/04 Data analysis/SRKW_WO_16Sdiet_dada2out.Rdata")
+load("Data/SRKW_WO_16Sdiet_dada2out.Rdata")
 
 ### Merge taxa to species, remove O. orca seqs ---------------------------------
 ps.sp <- tax_glom(ps, taxrank="Species") %>% 
@@ -48,20 +45,23 @@ ps.sp_major <- prune_taxa(lowcount.filt, ps.sp_proportional)
 species_prop_bar <- plot_bar(ps.sp_major, x = "Sample", fill = "Species") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(hjust = 0.5)) +
-  labs(title = "Diet Composition of Samples",
-       x = "Sample ID",
+  labs(x = "Sample ID",
        y = "Relative Abundance") +
   scale_y_continuous(labels = scales::percent) +
-  scale_fill_discrete(limits = c("Atheresthes stomias","Oncorhynchus keta","Oncorhynchus kisutch","Oncorhynchus mykiss", 
+  scale_fill_discrete(limits = c("Atheresthes stomias","Oncorhynchus keta",
+                                 "Oncorhynchus kisutch","Oncorhynchus mykiss", 
                                  "Oncorhynchus tshawytscha", "Ophiodon elongatus", "Sebastes ensifer",
                                  "Carcharodon carcharias", "Gadus chalcogrammus",
                                  "Microstomus pacificus", "Hippoglossus stenolepis",
                                  "Oncorhynchus nerka"),
-                      labels = c("Arrowtooth flounder", "Chum salmon", "Coho salmon", "Steelhed salmon", 
+                      labels = c("Arrowtooth flounder", "Chum salmon", 
+                                 "Coho salmon", "Steelhead", 
                                  "Chinook salmon", "Lingcod","Swordspine rockfish",
                                  "Great white shark", "Alaska polluck",
                                  "Pacific Dover sole", "Pacific halibut",
-                                 "Sockeye salmon"))
+                                 "Sockeye salmon"),
+                      type = c("#2c6184","#59629b","#89689d", "#ba7999","#015b58", "#e69b99","#24492e",
+                               as.character(pnw_palette("Shuksan", 6))))
 
 ### Compare Cleaned and Not Cleaned (nc) samples -------------------------------
 
@@ -75,10 +75,11 @@ dna_con_subset <- samdf %>%
   unite(LAb:Samp, col = "SampleID", sep = "-") %>% 
   ggplot(aes(x=PCR_clean, y = Index_concentration, color = SampleID)) +
   geom_violin(color = "grey50") +
-  geom_quasirandom(dodge.width = 0.5, varwidth = TRUE) +
+  geom_quasirandom(dodge.width = 0.5, varwidth = TRUE, size = 3) +
   theme(text = element_text(size = 14), legend.position = "none") +
   scale_color_viridis(discrete = TRUE) +
-  ylab("Final DNA concentration (ng/ul)")
+  ylab("Final DNA concentration (ng/ul)") +
+  xlab("PCR cleaned?")
 
 #Read count
 reads_subset <- track %>% 
@@ -100,11 +101,12 @@ reads_subset <- track %>%
   filter(SampleID != "WADE-002-002") %>% 
   ggplot(aes(x=PCR_clean, y = nonchim, color = SampleID)) +
   geom_violin(color = "grey50") +
-  geom_quasirandom(dodge.width = 0.5, varwidth = TRUE) +
+  geom_quasirandom(dodge.width = 0.5, varwidth = TRUE, size = 3) +
   theme(text = element_text(size = 14), legend.position = "none") +
   scale_color_viridis(discrete = TRUE) +
   ylab("Read count")+
-  ylim(0,80000)
+  ylim(0,80000)+
+  xlab("PCR cleaned?")
 
 #bar plot
 species_prop_subset <- plot_bar(ps.sp_subset, x = "Sample", fill = "Species") +
@@ -117,16 +119,20 @@ species_prop_subset <- plot_bar(ps.sp_subset, x = "Sample", fill = "Species") +
   labs(x = "Sample ID",
        y = "Relative Abundance") +
   scale_y_continuous(labels = scales::percent) +
-  scale_fill_discrete(limits = c("Atheresthes stomias","Oncorhynchus keta","Oncorhynchus kisutch","Oncorhynchus mykiss", 
+  scale_fill_discrete(limits = c("Atheresthes stomias","Oncorhynchus keta",
+                                 "Oncorhynchus kisutch","Oncorhynchus mykiss", 
                                  "Oncorhynchus tshawytscha", "Ophiodon elongatus", "Sebastes ensifer",
                                  "Carcharodon carcharias", "Gadus chalcogrammus",
                                  "Microstomus pacificus", "Hippoglossus stenolepis",
                                  "Oncorhynchus nerka"),
-                      labels = c("Arrowtooth flounder", "Chum salmon", "Coho salmon", "Steelhed salmon", 
+                      labels = c("Arrowtooth flounder", "Chum salmon", 
+                                 "Coho salmon", "Steelhead", 
                                  "Chinook salmon", "Lingcod","Swordspine rockfish",
                                  "Great white shark", "Alaska polluck",
                                  "Pacific Dover sole", "Pacific halibut",
-                                 "Sockeye salmon")) +
+                                 "Sockeye salmon"),
+                      type = c("#2c6184","#59629b","#89689d", "#ba7999","#015b58", "#e69b99","#24492e",
+                               as.character(pnw_palette("Shuksan", 6)))) +
   guides(color=guide_legend(ncol=2)) +
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
@@ -293,5 +299,5 @@ year_bar / year_box
 
 ### Save plots -----------------------------------------------------------------
 save(year_box, year_bar, monthly_prey_proportion, monthly_prop, season_bar, 
-     dna_con_subset, reads_subset, species_prop_bar, species_prop_subset, file = "SRKW_WO_16Sdiet_phyloseqout.Rdata")
+     dna_con_subset, reads_subset, species_prop_bar, species_prop_subset, file = "Data/SRKW_WO_16Sdiet_phyloseqout.Rdata")
 

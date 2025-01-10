@@ -13,7 +13,7 @@ library(ggplot2)
 theme_set(theme_bw())
 
 #### Get raw sequence data -----------------------------------------------------
-path <- "M:\\SRKW Diet Metabarcoding\\Sequence data\\16SP1"
+path <- "Data/fastq"
 list.files(path)
 
 #Separate Forward and Reverse Fastq Files
@@ -84,17 +84,17 @@ rownames(track) <- sample.names
 
 ### Assign Taxonomy ------------------------------------------------------------
 taxa <- assignTaxonomy(seqtab.nochim, 
-                       "G:/My Drive/00 UW/00.5 W.A.D.E. lab resources/Intern Projects/SRKW diet metabarcoding/04 Data analysis/16S_salmon_groundfish_reference_database_2022.fasta")
+                       "Data/16S_salmon_groundfish_reference_database_2022.fasta")
 
 
 ### Combine into phyloseq object -----------------------------------------------
 # Get sample metadata
-samdf <- read.csv("G:/My Drive/00 UW/00.5 W.A.D.E. lab resources/Intern Projects/SRKW diet metabarcoding/04 Data analysis/SRKW_WO_SDZWA_EditedforR.csv") %>%
+samdf <- read.csv("Data/SRKW_WO_metadata.csv") %>%
   column_to_rownames(var = "LabID")
 
 ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), 
                sample_data(samdf), 
                tax_table(taxa))
 
-save(ps,taxa,samdf,seqtab.nochim,track,file="G:/My Drive/00 UW/00.5 W.A.D.E. lab resources/Intern Projects/SRKW diet metabarcoding/04 Data analysis/SRKW_WO_16Sdiet_dada2out.Rdata")
+save(ps,taxa,samdf,seqtab.nochim,track,file="SRKW_WO_16Sdiet_dada2out.Rdata")
 
