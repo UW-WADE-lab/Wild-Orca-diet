@@ -240,4 +240,4 @@ Supplemental Figure 1 (bottom) shows the difference in final DNA concentration (
 
 Sofia Kaiaua presented the intermediate results of this research at the UW Summer Research Symposium following a 10-week internship program. This presentation is included as Supplemental Figure 2.
 
-![Supplemental Figure 2. Poster presented by Sofia Kaiaua at the UW Summer Research Symposium in August 2024, detailing intermediate results of genetic metabarcoding protocol optimization.](docs/Kaiaua.WO_labwork_optimization_poster_2024.png){#id .class align="center"}
+![Supplemental Figure 2. Poster presented by Sofia Kaiaua at the UW Summer Research Symposium in August 2024, detailing intermediate results of genetic metabarcoding protocol optimization.](Kaiaua.WO_labwork_optimization_poster_2024.png){#id .class align="center"}
